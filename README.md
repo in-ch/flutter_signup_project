@@ -2,15 +2,12 @@
 
 A new Flutter project.
 
-## Getting Started
+## 25 스트림과 파이어베이스 
+- 지속적으로 데이터를 받을 때 사용 
 
-This project is a starting point for a Flutter application.
+            즉시 사용가능       기다려야 사용가능
+단일 데이터     int                Future<int>
+복수 데이터    List<int>           Stream<int>
 
-A few resources to get you started if this is your first Flutter project:
+이 Stream을 구독하고 있는 한 스트림에 데이터가 전달될 때 마다 그 즉시 알 수 있다.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.

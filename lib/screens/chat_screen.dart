@@ -1,5 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api, avoid_print
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -35,24 +36,46 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Chat screen'),
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.exit_to_app_sharp,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              _authentication.signOut();
-              Navigator.pop(context);
-            },
-          )
-        ],
-      ),
-      body: const Center(
-        child: Text('Chat screen'),
-      ),
-    );
+        appBar: AppBar(
+          title: const Text('Chat screen'),
+          actions: [
+            IconButton(
+              icon: const Icon(
+                Icons.exit_to_app_sharp,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                _authentication.signOut();
+                Navigator.pop(context);
+              },
+            )
+          ],
+        ),
+        body: StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection('chats/wlHWnrdYYtoXcEOPtrFU/message')
+              .snapshots(),
+          builder: (BuildContext context,
+              AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            final docs = snapshot.data!.docs;
+            return ListView.builder(
+              itemCount: docs.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    docs[index]['text'],
+                    style: const TextStyle(fontSize: 20.0),
+                  ),
+                );
+              },
+            );
+          },
+        ));
   }
 }
