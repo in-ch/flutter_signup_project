@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:signup_project/screens/chat_screen.dart';
 import 'package:signup_project/screens/main_screen.dart';
 import 'firebase_options.dart';
 
@@ -17,7 +19,15 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Chatting app',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const LoginSignupScreen(),
+      home: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return const ChatScreen();
+          }
+          return const LoginSignupScreen();
+        },
+      ),
     );
   }
 }
